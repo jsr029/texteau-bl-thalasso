@@ -129,19 +129,19 @@ function Dashboard({ user, onLogout, token }) {
 
     doc.setFontSize(10);
     doc.setTextColor(70, 70, 70);
-    doc.text("4 Rue Pierre Idrac", 18, 35);
-    doc.text("29900 Concarneau", 18, 42);
-    doc.text("Tél : 02 98 10 46 29", 18, 49);
+    doc.text("4 Rue Pierre Idrac", 18, 38);
+    doc.text("29900 Concarneau", 18, 43);
+    doc.text("Tél : 02 98 10 46 29", 18, 48);
 
     // Titre + infos
     doc.setFontSize(22);
     doc.setTextColor(0, 48, 87);
-    doc.text("BON DE LIVRAISON", pageWidth - 20, 35, { align: "right" });
+    doc.text("BON DE LIVRAISON", pageWidth - 20, 25, { align: "right" });
 
     doc.setFontSize(11);
     doc.setTextColor(0, 0, 0);
-    doc.text(`N° ${numero}`, pageWidth - 20, 46, { align: "right" });
-    doc.text(`Date : ${date}`, pageWidth - 20, 53, { align: "right" });
+    doc.text(`N° ${numero}`, pageWidth - 20, 40, { align: "right" });
+    doc.text(`Date : ${date}`, pageWidth - 20, 45, { align: "right" });
 
     // Client
     doc.setFontSize(13);
