@@ -129,10 +129,9 @@ function Dashboard({ user, onLogout, token }) {
 
     doc.setFontSize(10);
     doc.setTextColor(70, 70, 70);
-    doc.text("LE NETTOYAGE NATURE", 18, 35);
-    doc.text("4 Rue Pierre Idrac", 18, 42);
-    doc.text("29900 Concarneau", 18, 49);
-    doc.text("Tél : 02 98 10 46 29", 18, 56);
+    doc.text("4 Rue Pierre Idrac", 18, 35);
+    doc.text("29900 Concarneau", 18, 42);
+    doc.text("Tél : 02 98 10 46 29", 18, 49);
 
     // Titre + infos
     doc.setFontSize(22);
@@ -146,10 +145,10 @@ function Dashboard({ user, onLogout, token }) {
 
     // Client
     doc.setFontSize(13);
-    doc.text("THALASSO CONCARNEAU", pageWidth - 20, 72, { align: "right" });
+    doc.text("THALASSO CONCARNEAU", pageWidth - 20, 55, { align: "right" });
     doc.setFontSize(10);
-    doc.text("36 Rue des Sables Blancs", pageWidth - 20, 79, { align: "right" });
-    doc.text("29900 Concarneau", pageWidth - 20, 86, { align: "right" });
+    doc.text("36 Rue des Sables Blancs", pageWidth - 20, 62, { align: "right" });
+    doc.text("29900 Concarneau", pageWidth - 20, 69, { align: "right" });
 
     // Tableau
     const tableData = Object.entries(quantites)
@@ -160,7 +159,7 @@ function Dashboard({ user, onLogout, token }) {
       ]);
 
     autoTable(doc, {
-      startY: 65,
+      startY: 75,
       head: [["Article", "Quantité"]],
       body: tableData,
       theme: 'striped',
