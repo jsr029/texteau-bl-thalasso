@@ -4,7 +4,6 @@ import Dashboard from './components/Dashboard';
 
 function App() {
   const token = localStorage.getItem('token');
-
   return (
     <Router>
       <Routes>
