@@ -12,6 +12,7 @@ dotenv.config();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3001;
+const API_URL = process.env.VITE_API_URL || 'http://localhost:3001';
 
 app.use(cors({
   origin: [
@@ -62,7 +63,7 @@ const authenticate = (req, res, next) => {
 };
 
 // Routes API
-app.post('/api/login', async (req, res) => {
+app.post(`${API_URL}/api/login`, async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -72,7 +73,7 @@ app.post('/api/login', async (req, res) => {
   res.json({ token, user: { email: user.email } });
 });
 
-app.post('/api/bons', authenticate, async (req, res) => {
+app.post(`${API_URL}/api/bons`, authenticate, async (req, res) => {
   const { quantites } = req.body;
   const bon = await Bon.create({
     numero: 'BL-' + Date.now().toString().slice(-6),
