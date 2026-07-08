@@ -6,7 +6,6 @@ export default function Header({ user, onLogout, menuOpen, setMenuOpen, currentP
       <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
         <div className="flex items-center gap-4">
           <img src={logo} alt="Logo" className="h-12 w-auto" />
-          <div className="font-bold text-2xl">Text'eau</div>
         </div>
 
         <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-4xl">☰</button>
