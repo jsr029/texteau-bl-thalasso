@@ -160,7 +160,7 @@ function Dashboard({ user, onLogout, token }) {
       ]);
 
     autoTable(doc, {
-      startY: 85,
+      startY: 65,
       head: [["Article", "Quantité"]],
       body: tableData,
       theme: 'striped',
