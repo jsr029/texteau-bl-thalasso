@@ -56,9 +56,9 @@ export default function Dashboard() {
 
     doc.setFontSize(10);
     doc.setTextColor(70, 70, 70);
-    doc.text("4 Rue Pierre Idrac", 18, 48);
-    doc.text("29900 Concarneau", 18, 55);
-    doc.text("Tél : 02 98 10 46 29", 18, 62);
+    doc.text("4 Rue Pierre Idrac", 18, 28);
+    doc.text("29900 Concarneau", 18, 35);
+    doc.text("Tél : 02 98 10 46 29", 18, 42);
 
     doc.setFontSize(22);
     doc.setTextColor(0, 48, 87);
@@ -132,9 +132,9 @@ export default function Dashboard() {
 
     doc.setFontSize(10);
     doc.setTextColor(70, 70, 70);
-    doc.text("4 Rue Pierre Idrac", 18, 48);
-    doc.text("29900 Concarneau", 18, 55);
-    doc.text("Tél : 02 98 10 46 29", 18, 62);
+    doc.text("4 Rue Pierre Idrac", 18, 28);
+    doc.text("29900 Concarneau", 18, 35);
+    doc.text("Tél : 02 98 10 46 29", 18, 42);
 
     doc.setFontSize(22);
     doc.setTextColor(0, 48, 87);
