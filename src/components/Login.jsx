@@ -33,8 +33,8 @@ export default function Login() {
         <div className="flex justify-center mb-8">
           <img src={logo} alt="Logo" className="h-20 w-auto" />
         </div>
-        <h1 className="text-4xl font-bold text-center mb-2">Text'eau</h1>
-        <p className="text-center text-gray-600 mb-8">Bons de Livraison</p>
+        <h1 className="text-4xl font-bold text-center mb-2">Créer un BL</h1>
+        <p className="text-center text-gray-600 mb-8">Pour la thalasso</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} className="w-full px-5 py-4 border rounded-2xl focus:ring-2 focus:ring-blue-500" required />
