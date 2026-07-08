@@ -129,10 +129,10 @@ function Dashboard({ user, onLogout, token }) {
 
     doc.setFontSize(10);
     doc.setTextColor(70, 70, 70);
-    doc.text("LE NETTOYAGE NATURE", 18, 65);
-    doc.text("4 Rue Pierre Idrac", 18, 72);
-    doc.text("29900 Concarneau", 18, 79);
-    doc.text("Tél : 02 98 10 46 29", 18, 86);
+    doc.text("LE NETTOYAGE NATURE", 18, 35);
+    doc.text("4 Rue Pierre Idrac", 18, 42);
+    doc.text("29900 Concarneau", 18, 49);
+    doc.text("Tél : 02 98 10 46 29", 18, 56);
 
     // Titre + infos
     doc.setFontSize(22);
@@ -160,7 +160,7 @@ function Dashboard({ user, onLogout, token }) {
       ]);
 
     autoTable(doc, {
-      startY: 105,
+      startY: 85,
       head: [["Article", "Quantité"]],
       body: tableData,
       theme: 'striped',
