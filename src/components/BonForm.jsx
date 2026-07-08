@@ -29,12 +29,6 @@ export default function BonForm({ quantites, setQuantites, onSave }) {
       >
         💾 Enregistrer + Générer PDF
       </button>
-      <button 
-        onClick={onReset}
-        className="mt-4 mr-4 bg-gray-500 hover:bg-gray-600 text-white py-3 px-6 rounded-2xl text-sm"
-        >
-        Réinitialiser le formulaire
-        </button>
     </div>
   );
 }
