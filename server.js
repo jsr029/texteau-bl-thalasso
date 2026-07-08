@@ -12,16 +12,16 @@ dotenv.config();
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3001;
-const API_URL = process.env.VITE_API_URL || 'http://localhost:3001';
 
 app.use(cors({
   origin: function (origin, callback) {
     const allowedOrigins = [
       'https://texteau-bl-thalasso.vercel.app',
       'http://localhost:5173',
-      'http://localhost:3000'
+      'http://localhost:3000',
+      'https://texteau-bl-thalasso-*.vercel.app'  // Pour tous les previews Vercel
     ];
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin || allowedOrigins.some(allowed => origin === allowed || origin.match(/texteau-bl-thalasso.*vercel\.app/))) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
@@ -31,14 +31,15 @@ app.use(cors({
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 app.use(express.json());
 
-// Servir les fichiers statiques (build React)
+// Servir les fichiers statiques React
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // Connexion MongoDB
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('✅ MongoDB connecté'))
+  .then(() => console.log('✅ MongoDB Atlas connecté'))
   .catch(err => console.error('❌ MongoDB erreur:', err));
 
 // Modèles
@@ -55,7 +56,7 @@ const Bon = mongoose.model('Bon', new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 }));
 
-// Middleware d'authentification
+// Middleware auth
 const authenticate = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1];
   if (!token) return res.status(401).json({ error: "Non autorisé" });
@@ -68,8 +69,8 @@ const authenticate = (req, res, next) => {
   }
 };
 
-// Routes API
-app.post(`${API_URL}/api/login`, async (req, res) => {
+// ==================== ROUTES API ====================
+app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -79,7 +80,7 @@ app.post(`${API_URL}/api/login`, async (req, res) => {
   res.json({ token, user: { email: user.email } });
 });
 
-app.post(`${API_URL}/api/bons`, authenticate, async (req, res) => {
+app.post('/api/bons', authenticate, async (req, res) => {
   const { quantites } = req.body;
   const bon = await Bon.create({
     numero: 'BL-' + Date.now().toString().slice(-6),
@@ -89,11 +90,11 @@ app.post(`${API_URL}/api/bons`, authenticate, async (req, res) => {
   res.json({ success: true, bon });
 });
 
-// **Route catch-all corrigée** (important !)
+// Catch-all route pour React (SPA)
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`);
+  console.log(`🚀 Serveur démarré sur port ${PORT}`);
 });
