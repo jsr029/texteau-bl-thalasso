@@ -22,6 +22,7 @@ export default function Dashboard() {
     ST_blanches: 0, ST_beiges: 0, DB: 0, TB: 0,
     Oshis: 0, peignoir_T1: 0, peignoir_T2: 0, peignoir_T3: 0, peignoir_T4: 0
   });
+  const [editingBonId, setEditingBonId] = useState(null); // Pour conserver le même numéro
 
   const loadBons = async () => {
     try {
@@ -45,7 +46,7 @@ export default function Dashboard() {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  // Générer PDF
+  // Générer PDF (conserve positions originales)
   const generatePDF = (data = quantites, existingNumero = null) => {
     const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
     const pageWidth = doc.internal.pageSize.getWidth();
@@ -99,11 +100,20 @@ export default function Dashboard() {
 
   const saveAndGenerate = async () => {
     try {
-      await axios.post(`${API_URL}/api/bons`, { quantites }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      if (editingBonId) {
+        // Mise à jour (écrase)
+        await axios.put(`${API_URL}/api/bons/${editingBonId}`, { quantites }, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      } else {
+        // Nouveau
+        await axios.post(`${API_URL}/api/bons`, { quantites }, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+      }
       loadBons();
       generatePDF();
+      setEditingBonId(null); // Reset après sauvegarde
     } catch (e) {
       alert('Erreur lors de la sauvegarde');
     }
@@ -175,9 +185,10 @@ export default function Dashboard() {
     window.open(url, '_blank');
   };
 
-  // Modifier un bon
+  // Modifier un bon existant (conserve le numéro)
   const editBon = (bon) => {
     setQuantites(bon.quantites);
+    setEditingBonId(bon._id);  // Important pour conserver le numéro
     setCurrentPage('bons');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
