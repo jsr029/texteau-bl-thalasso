@@ -83,7 +83,7 @@ export default function Dashboard() {
       ]);
 
     autoTable(doc, {
-      startY: 90,
+      startY: 75,
       head: [["Article", "Quantité"]],
       body: tableData,
       theme: 'striped',
@@ -159,7 +159,7 @@ export default function Dashboard() {
       ]);
 
     autoTable(doc, {
-      startY: 90,
+      startY: 75,
       head: [["Article", "Quantité"]],
       body: tableData,
       theme: 'striped',
