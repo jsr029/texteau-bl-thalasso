@@ -56,9 +56,9 @@ export default function Dashboard() {
 
     doc.setFontSize(10);
     doc.setTextColor(70, 70, 70);
-    doc.text("4 Rue Pierre Idrac", 18, 35);
-    doc.text("29900 Concarneau", 18, 42);
-    doc.text("Tél : 02 98 10 46 29", 18, 49);
+    doc.text("4 Rue Pierre Idrac", 18, 40);
+    doc.text("29900 Concarneau", 18, 47);
+    doc.text("Tél : 02 98 10 46 29", 18, 54);
 
     doc.setFontSize(22);
     doc.setTextColor(0, 48, 87);
@@ -66,14 +66,14 @@ export default function Dashboard() {
 
     doc.setFontSize(11);
     doc.setTextColor(0, 0, 0);
-    doc.text(`N° ${numero}`, pageWidth - 20, 46, { align: "right" });
-    doc.text(`Date : ${date}`, pageWidth - 20, 53, { align: "right" });
+    doc.text(`N° ${numero}`, pageWidth - 20, 40, { align: "right" });
+    doc.text(`Date : ${date}`, pageWidth - 20, 45, { align: "right" });
 
     doc.setFontSize(13);
-    doc.text("THALASSO CONCARNEAU", pageWidth - 20, 72, { align: "right" });
+    doc.text("THALASSO CONCARNEAU", pageWidth - 20, 55, { align: "right" });
     doc.setFontSize(10);
-    doc.text("36 Rue des Sables Blancs", pageWidth - 20, 79, { align: "right" });
-    doc.text("29900 Concarneau", pageWidth - 20, 86, { align: "right" });
+    doc.text("36 Rue des Sables Blancs", pageWidth - 20, 62, { align: "right" });
+    doc.text("29900 Concarneau", pageWidth - 20, 69, { align: "right" });
 
     const tableData = Object.entries(data)
       .filter(([, qty]) => qty > 0)
@@ -83,7 +83,7 @@ export default function Dashboard() {
       ]);
 
     autoTable(doc, {
-      startY: 105,
+      startY: 90,
       head: [["Article", "Quantité"]],
       body: tableData,
       theme: 'striped',
@@ -132,9 +132,9 @@ export default function Dashboard() {
 
     doc.setFontSize(10);
     doc.setTextColor(70, 70, 70);
-    doc.text("4 Rue Pierre Idrac", 18, 35);
-    doc.text("29900 Concarneau", 18, 42);
-    doc.text("Tél : 02 98 10 46 29", 18, 49);
+    doc.text("4 Rue Pierre Idrac", 18, 40);
+    doc.text("29900 Concarneau", 18, 47);
+    doc.text("Tél : 02 98 10 46 29", 18, 54);
 
     doc.setFontSize(22);
     doc.setTextColor(0, 48, 87);
@@ -143,13 +143,13 @@ export default function Dashboard() {
     doc.setFontSize(11);
     doc.setTextColor(0, 0, 0);
     doc.text(`N° ${numero}`, pageWidth - 20, 40, { align: "right" });
-    doc.text(`Date : ${date}`, pageWidth - 20, 62, { align: "right" });
+    doc.text(`Date : ${date}`, pageWidth - 20, 45, { align: "right" });
 
     doc.setFontSize(13);
-    doc.text("THALASSO CONCARNEAU", pageWidth - 20, 68, { align: "right" });
+    doc.text("THALASSO CONCARNEAU", pageWidth - 20, 55, { align: "right" });
     doc.setFontSize(10);
-    doc.text("36 Rue des Sables Blancs", pageWidth - 20, 75, { align: "right" });
-    doc.text("29900 Concarneau", pageWidth - 20, 82, { align: "right" });
+    doc.text("36 Rue des Sables Blancs", pageWidth - 20, 62, { align: "right" });
+    doc.text("29900 Concarneau", pageWidth - 20, 69, { align: "right" });
 
     const tableData = Object.entries(bon.quantites)
       .filter(([, qty]) => qty > 0)
