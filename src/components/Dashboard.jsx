@@ -24,31 +24,84 @@ export default function Dashboard() {
   });
 
   const loadBons = async () => {
-    const res = await axios.get(`${API_URL}/api/bons`, { headers: { Authorization: `Bearer ${token}` } });
-    setBons(res.data);
+    try {
+      const res = await axios.get(`${API_URL}/api/bons`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setBons(res.data);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   useEffect(() => {
     loadBons();
   }, []);
 
+  const handleChange = (e) => {
+    setQuantites(prev => ({ ...prev, [e.target.name]: parseInt(e.target.value) || 0 }));
+  };
+
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  const generatePDF = (data = quantites) => {
-    const doc = new jsPDF();
+  const generatePDF = (data = quantites, existingNumero = null) => {
+    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
     const pageWidth = doc.internal.pageSize.getWidth();
-    const numero = 'BL-' + Date.now().toString().slice(-6);
+    const date = tomorrow.toLocaleDateString('fr-FR');
+    const numero = existingNumero || 'BL-' + Date.now().toString().slice(-6);
 
     doc.addImage(logo, 'PNG', 15, 10, 75, 48);
-    // ... (le reste de ta fonction PDF)
+
+    doc.setFontSize(10);
+    doc.setTextColor(70, 70, 70);
+    doc.text("LE NETTOYAGE NATURE", 18, 65);
+    doc.text("4 Rue Pierre Idrac", 18, 72);
+    doc.text("29900 Concarneau", 18, 79);
+    doc.text("Tél : 02 98 10 46 29", 18, 86);
+
+    doc.setFontSize(22);
+    doc.setTextColor(0, 48, 87);
+    doc.text("BON DE LIVRAISON", pageWidth - 20, 35, { align: "right" });
+
+    doc.setFontSize(11);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`N° ${numero}`, pageWidth - 20, 46, { align: "right" });
+    doc.text(`Date : ${date}`, pageWidth - 20, 53, { align: "right" });
+
+    doc.setFontSize(13);
+    doc.text("THALASSO CONCARNEAU", pageWidth - 20, 72, { align: "right" });
+    doc.setFontSize(10);
+    doc.text("36 Rue des Sables Blancs", pageWidth - 20, 79, { align: "right" });
+    doc.text("29900 Concarneau", pageWidth - 20, 86, { align: "right" });
+
+    const tableData = Object.entries(data)
+      .filter(([, qty]) => qty > 0)
+      .map(([key, qty]) => [
+        key.replace(/_/g, ' ').replace('peignoir', 'Peignoir'),
+        qty
+      ]);
+
+    autoTable(doc, {
+      startY: 105,
+      head: [["Article", "Quantité"]],
+      body: tableData,
+      theme: 'striped',
+      styles: { fontSize: 11, cellPadding: 8 },
+      headStyles: { fillColor: [0, 48, 87], textColor: [255, 255, 255] },
+    });
+
+    doc.setFontSize(13);
+    doc.text("Merci pour votre confiance !", pageWidth / 2, 265, { align: "center" });
 
     doc.save(`bon_livraison_${numero}.pdf`);
   };
 
   const saveAndGenerate = async () => {
     try {
-      await axios.post(`${API_URL}/api/bons`, { quantites }, { headers: { Authorization: `Bearer ${token}` } });
+      await axios.post(`${API_URL}/api/bons`, { quantites }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       loadBons();
       generatePDF();
     } catch (e) {
@@ -57,9 +110,15 @@ export default function Dashboard() {
   };
 
   const deleteBon = async (id) => {
-    if (!confirm('Supprimer ?')) return;
-    await axios.delete(`${API_URL}/api/bons/${id}`, { headers: { Authorization: `Bearer ${token}` } });
-    loadBons();
+    if (!confirm('Supprimer ce bon ?')) return;
+    try {
+      await axios.delete(`${API_URL}/api/bons/${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      loadBons();
+    } catch (e) {
+      alert('Erreur suppression');
+    }
   };
 
   const viewBon = (bon) => {
@@ -67,11 +126,20 @@ export default function Dashboard() {
     setCurrentPage('bons');
   };
 
+  const generateExistingPDF = (bon) => {
+    generatePDF(bon.quantites, bon.numero);
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = '/login';
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Header 
         user={user} 
-        onLogout={() => window.location.href = '/login'} 
+        onLogout={handleLogout} 
         menuOpen={menuOpen} 
         setMenuOpen={setMenuOpen}
         currentPage={currentPage}
@@ -83,8 +151,13 @@ export default function Dashboard() {
           <>
             <h1 className="text-4xl font-bold text-center mb-10">Gestion des Bons</h1>
             <BonForm quantites={quantites} setQuantites={setQuantites} onSave={saveAndGenerate} />
-            <h2 className="text-2xl font-bold mb-6 mt-12">Historique</h2>
-            <BonList bons={bons} onDelete={deleteBon} onGeneratePDF={generatePDF} onViewBon={viewBon} />
+            <h2 className="text-2xl font-bold mb-6 mt-12">Historique des Bons</h2>
+            <BonList 
+              bons={bons} 
+              onDelete={deleteBon} 
+              onGeneratePDF={generateExistingPDF}
+              onViewBon={viewBon} 
+            />
           </>
         )}
 
