@@ -10,18 +10,16 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 let User, Bon;
 
-// Connexion MongoDB (réutilisée)
 const connectDB = async () => {
   if (mongoose.connections[0].readyState) return;
   await mongoose.connect(MONGODB_URI);
 };
 
-// Modèles
 const getUserModel = () => {
   if (User) return User;
   User = mongoose.models.User || mongoose.model('User', new mongoose.Schema({
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
+    password: String,
     name: String
   }));
   return User;
@@ -39,19 +37,18 @@ const getBonModel = () => {
 };
 
 export default async function handler(req, res) {
-  const { pathname } = new URL(req.url, `http://${req.headers.host}`);
-
-  // CORS
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
     await connectDB();
+    const { pathname } = new URL(req.url, `http://${req.headers.host}`);
 
+    // Login
     if (pathname === '/api/login' && req.method === 'POST') {
       const { email, password } = req.body;
       const UserModel = getUserModel();
@@ -62,29 +59,42 @@ export default async function handler(req, res) {
       }
 
       const token = jwt.sign({ id: user._id, email }, JWT_SECRET, { expiresIn: '7d' });
-      return res.status(200).json({ token, user: { email: user.email } });
+      return res.json({ token, user: { email: user.email } });
     }
 
-    if (pathname === '/api/bons' && req.method === 'POST') {
+    // Bons CRUD
+    if (pathname.startsWith('/api/bons')) {
       const token = req.headers.authorization?.split(' ')[1];
       if (!token) return res.status(401).json({ error: "Non autorisé" });
-
       jwt.verify(token, JWT_SECRET);
 
-      const { quantites } = req.body;
       const BonModel = getBonModel();
-      const bon = await BonModel.create({
-        numero: 'BL-' + Date.now().toString().slice(-6),
-        date: new Date().toLocaleDateString('fr-FR'),
-        quantites
-      });
 
-      return res.status(200).json({ success: true, bon });
+      if (req.method === 'POST') {
+        const { quantites } = req.body;
+        const bon = await BonModel.create({
+          numero: 'BL-' + Date.now().toString().slice(-6),
+          date: new Date().toLocaleDateString('fr-FR'),
+          quantites
+        });
+        return res.json({ success: true, bon });
+      }
+
+      if (req.method === 'GET') {
+        const bons = await BonModel.find().sort({ createdAt: -1 });
+        return res.json(bons);
+      }
+
+      if (req.method === 'DELETE') {
+        const id = pathname.split('/').pop();
+        await BonModel.findByIdAndDelete(id);
+        return res.json({ success: true });
+      }
     }
 
     return res.status(404).json({ error: 'Route non trouvée' });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Erreur serveur' });
+    res.status(500).json({ error: 'Erreur serveur' });
   }
 }
