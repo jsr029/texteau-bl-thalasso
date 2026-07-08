@@ -92,7 +92,7 @@ export default function Dashboard() {
     });
 
     doc.setFontSize(13);
-    doc.text("Merci pour votre confiance !", pageWidth / 2, 300, { align: "center" });
+    doc.text("Merci pour votre confiance !", pageWidth / 2, 340, { align: "center" });
 
     doc.save(`bon_livraison_${numero}.pdf`);
   };
@@ -168,7 +168,7 @@ export default function Dashboard() {
     });
 
     doc.setFontSize(13);
-    doc.text("Merci pour votre confiance !", pageWidth / 2, 300, { align: "center" });
+    doc.text("Merci pour votre confiance !", pageWidth / 2, 340, { align: "center" });
 
     const pdfBlob = doc.output('blob');
     const url = URL.createObjectURL(pdfBlob);
