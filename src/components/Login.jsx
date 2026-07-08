@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
-import logo from '../logo.png'; // Ajuste le chemin si nécessaire
+import logo from '../logo.png'; // Ajuste le chemin si nécessair
+import dotenv from 'dotenv';
+dotenv.config();
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
 
