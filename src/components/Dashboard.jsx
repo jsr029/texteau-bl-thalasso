@@ -92,7 +92,7 @@ export default function Dashboard() {
     });
 
     doc.setFontSize(13);
-    doc.text("Merci pour votre confiance !", pageWidth / 2, 285, { align: "center" });
+    doc.text("Merci pour votre confiance !", pageWidth / 2, 270, { align: "center" });
 
     doc.save(`bon_livraison_${numero}.pdf`);
   };
@@ -159,7 +159,7 @@ export default function Dashboard() {
       ]);
 
     autoTable(doc, {
-      startY: 75,
+      startY: 90,
       head: [["Article", "Quantité"]],
       body: tableData,
       theme: 'striped',
@@ -168,7 +168,7 @@ export default function Dashboard() {
     });
 
     doc.setFontSize(13);
-    doc.text("Merci pour votre confiance !", pageWidth / 2, 285, { align: "center" });
+    doc.text("Merci pour votre confiance !", pageWidth / 2, 270, { align: "center" });
 
     const pdfBlob = doc.output('blob');
     const url = URL.createObjectURL(pdfBlob);
