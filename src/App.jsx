@@ -66,8 +66,8 @@ function Login({ setToken, setUser }) {
           <img src={logo} alt="Text'eau" className="h-20 w-auto" />
         </div>
         
-        <h1 className="text-4xl font-bold text-center text-gray-900 mb-2">Text'eau</h1>
-        <p className="text-center text-gray-600 mb-8">Bons de Livraison</p>
+        <h1 className="text-4xl font-bold text-center text-gray-900 mb-2">Créer un BL</h1>
+        <p className="text-center text-gray-600 mb-8">pour la Thalasso</p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <input 
