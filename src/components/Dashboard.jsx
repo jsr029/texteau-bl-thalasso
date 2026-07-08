@@ -19,8 +19,8 @@ export default function Dashboard() {
   // Bons
   const [bons, setBons] = useState([]);
   const [quantites, setQuantites] = useState({
-    serv_blanches: 0, serv_beiges: 0, draps: 0, tapis: 0,
-    oshis: 0, peignoir_t1: 0, peignoir_t2: 0, peignoir_t3: 0, peignoir_t4: 0
+    ST_blanches: 0, ST_beiges: 0, DB: 0, TB: 0,
+    Oshis: 0, peignoir_T1: 0, peignoir_T2: 0, peignoir_T3: 0, peignoir_T4: 0
   });
 
   const loadBons = async () => {
