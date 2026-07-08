@@ -85,13 +85,21 @@ export default async function handler(req, res) {
         return res.json(bons);
       }
 
+      if (req.method === 'PUT') {
+        const id = pathname.split('/').pop();
+        const { quantites } = req.body;
+        const bon = await BonModel.findByIdAndUpdate(id, { quantites }, { new: true });
+        if (!bon) return res.status(404).json({ error: "Bon non trouvé" });
+        return res.json({ success: true, bon });
+      }
+
       if (req.method === 'DELETE') {
         const id = pathname.split('/').pop();
         await BonModel.findByIdAndDelete(id);
         return res.json({ success: true });
       }
     }
-    // ====================== USERS CRUD ======================
+        // ====================== USERS CRUD ======================
     if (pathname.startsWith('/api/users')) {
       const token = req.headers.authorization?.split(' ')[1];
       if (!token) return res.status(401).json({ error: "Non autorisé" });
