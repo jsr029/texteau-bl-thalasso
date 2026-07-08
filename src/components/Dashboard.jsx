@@ -45,7 +45,7 @@ export default function Dashboard() {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  // Générer PDF (utilisé pour nouveau et existant)
+  // Générer PDF
   const generatePDF = (data = quantites, existingNumero = null) => {
     const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
     const pageWidth = doc.internal.pageSize.getWidth();
@@ -159,7 +159,7 @@ export default function Dashboard() {
       ]);
 
     autoTable(doc, {
-      startY: 90,
+      startY: 75,
       head: [["Article", "Quantité"]],
       body: tableData,
       theme: 'striped',
