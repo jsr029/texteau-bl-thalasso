@@ -52,13 +52,13 @@ export default function Dashboard() {
     const date = tomorrow.toLocaleDateString('fr-FR');
     const numero = existingNumero || 'BL-' + Date.now().toString().slice(-6);
 
-    doc.addImage(logo, 'PNG', 15, 10, 75, 35);
+    doc.addImage(logo, 'PNG', 15, 10, 75, 25);
 
     doc.setFontSize(10);
     doc.setTextColor(70, 70, 70);
-    doc.text("4 Rue Pierre Idrac", 18, 45);
-    doc.text("29900 Concarneau", 18, 52);
-    doc.text("Tél : 02 98 10 46 29", 18, 59);
+    doc.text("4 Rue Pierre Idrac", 18, 48);
+    doc.text("29900 Concarneau", 18, 55);
+    doc.text("Tél : 02 98 10 46 29", 18, 62);
 
     doc.setFontSize(22);
     doc.setTextColor(0, 48, 87);
@@ -128,13 +128,13 @@ export default function Dashboard() {
     const date = tomorrow.toLocaleDateString('fr-FR');
     const numero = bon.numero;
 
-    doc.addImage(logo, 'PNG', 15, 10, 75, 35);
+    doc.addImage(logo, 'PNG', 15, 10, 75, 25);
 
     doc.setFontSize(10);
     doc.setTextColor(70, 70, 70);
-    doc.text("4 Rue Pierre Idrac", 18, 45);
-    doc.text("29900 Concarneau", 18, 52);
-    doc.text("Tél : 02 98 10 46 29", 18, 59);
+    doc.text("4 Rue Pierre Idrac", 18, 48);
+    doc.text("29900 Concarneau", 18, 55);
+    doc.text("Tél : 02 98 10 46 29", 18, 62);
 
     doc.setFontSize(22);
     doc.setTextColor(0, 48, 87);
