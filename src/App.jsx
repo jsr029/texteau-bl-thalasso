@@ -164,7 +164,7 @@ function Dashboard({ user, onLogout, token }) {
       head: [["Article", "Quantité"]],
       body: tableData,
       theme: 'striped',
-      styles: { fontSize: 11, cellPadding: 5 },
+      styles: { fontSize: 11, cellPadding: 3 },
       headStyles: { fillColor: [0, 48, 87], textColor: [255, 255, 255], fontStyle: 'bold' },
       alternateRowStyles: { fillColor: [248, 250, 252] },
       margin: { left: 15, right: 15 }
