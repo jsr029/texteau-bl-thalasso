@@ -91,7 +91,33 @@ export default async function handler(req, res) {
         return res.json({ success: true });
       }
     }
+    // ====================== USERS CRUD ======================
+    if (pathname.startsWith('/api/users')) {
+      const token = req.headers.authorization?.split(' ')[1];
+      if (!token) return res.status(401).json({ error: "Non autorisé" });
+      jwt.verify(token, JWT_SECRET);
 
+      const UserModel = getUserModel();
+
+      if (req.method === 'GET') {
+        const users = await UserModel.find().select('-password');
+        return res.json(users);
+      }
+
+      if (req.method === 'POST') {
+        const { email, password, name } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = await UserModel.create({ email, password: hashedPassword, name });
+        return res.json({ success: true, user: { email: user.email, name: user.name } });
+      }
+
+      if (req.method === 'DELETE') {
+        const id = pathname.split('/').pop();
+        await UserModel.findByIdAndDelete(id);
+        return res.json({ success: true });
+      }
+    }
+    
     return res.status(404).json({ error: 'Route non trouvée' });
   } catch (error) {
     console.error(error);
