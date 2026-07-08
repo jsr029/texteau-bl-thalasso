@@ -1,38 +1,33 @@
-export default function BonList({ bons, onDelete, onGeneratePDF, onViewBon }) {
+export default function BonList({ bons, onDelete, onViewPDF, onEditBon }) {
   return (
     <div className="bg-white rounded-3xl shadow-xl overflow-hidden">
       {bons.length === 0 ? (
-        <p className="p-12 text-center text-gray-500">Aucun bon enregistré pour le moment.</p>
+        <p className="p-12 text-center text-gray-500">Aucun bon enregistré.</p>
       ) : (
-        <div className="divide-y divide-gray-100">
-          {bons.map((bon) => (
-            <div 
-              key={bon._id} 
-              className="p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:bg-gray-50 transition"
-            >
-              <div className="flex-1">
-                <div className="font-semibold text-lg text-gray-900">{bon.numero}</div>
-                <div className="text-sm text-gray-500 mt-1">{bon.date}</div>
+        <div className="divide-y">
+          {bons.map(bon => (
+            <div key={bon._id} className="p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:bg-gray-50">
+              <div>
+                <div className="font-semibold text-lg">{bon.numero}</div>
+                <div className="text-sm text-gray-500">{bon.date}</div>
               </div>
 
-              <div className="flex flex-wrap gap-3">
+              <div className="flex gap-3 flex-wrap">
                 <button 
-                  onClick={() => onViewBon(bon)}
-                  className="px-5 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-2xl text-sm font-medium transition flex items-center gap-2"
+                  onClick={() => onViewPDF(bon)}
+                  className="px-5 py-2 bg-blue-100 text-blue-700 rounded-2xl hover:bg-blue-200 transition text-sm font-medium"
                 >
-                  👁 Voir / Modifier
+                  👁 Voir PDF
                 </button>
-                
                 <button 
-                  onClick={() => onGeneratePDF(bon)}
-                  className="px-5 py-2 bg-green-100 hover:bg-green-200 text-green-700 rounded-2xl text-sm font-medium transition flex items-center gap-2"
+                  onClick={() => onEditBon(bon)}
+                  className="px-5 py-2 bg-amber-100 text-amber-700 rounded-2xl hover:bg-amber-200 transition text-sm font-medium"
                 >
-                  📄 PDF
+                  ✏️ Modifier
                 </button>
-
                 <button 
                   onClick={() => onDelete(bon._id)}
-                  className="px-5 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-2xl text-sm font-medium transition"
+                  className="px-5 py-2 bg-red-100 text-red-700 rounded-2xl hover:bg-red-200 transition text-sm font-medium"
                 >
                   🗑
                 </button>

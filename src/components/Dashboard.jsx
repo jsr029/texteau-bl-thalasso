@@ -45,6 +45,7 @@ export default function Dashboard() {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
 
+  // Générer PDF (utilisé pour nouveau et existant)
   const generatePDF = (data = quantites, existingNumero = null) => {
     const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
     const pageWidth = doc.internal.pageSize.getWidth();
@@ -105,7 +106,7 @@ export default function Dashboard() {
       loadBons();
       generatePDF();
     } catch (e) {
-      alert('Erreur sauvegarde');
+      alert('Erreur lors de la sauvegarde');
     }
   };
 
@@ -121,13 +122,66 @@ export default function Dashboard() {
     }
   };
 
-  const viewBon = (bon) => {
-    setQuantites(bon.quantites);
-    setCurrentPage('bons');
+  // Voir PDF dans nouvel onglet
+  const viewPDF = (bon) => {
+    const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const date = tomorrow.toLocaleDateString('fr-FR');
+    const numero = bon.numero;
+
+    doc.addImage(logo, 'PNG', 15, 10, 75, 48);
+
+    doc.setFontSize(10);
+    doc.setTextColor(70, 70, 70);
+    doc.text("LE NETTOYAGE NATURE", 18, 65);
+    doc.text("4 Rue Pierre Idrac", 18, 72);
+    doc.text("29900 Concarneau", 18, 79);
+    doc.text("Tél : 02 98 10 46 29", 18, 86);
+
+    doc.setFontSize(22);
+    doc.setTextColor(0, 48, 87);
+    doc.text("BON DE LIVRAISON", pageWidth - 20, 35, { align: "right" });
+
+    doc.setFontSize(11);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`N° ${numero}`, pageWidth - 20, 46, { align: "right" });
+    doc.text(`Date : ${date}`, pageWidth - 20, 53, { align: "right" });
+
+    doc.setFontSize(13);
+    doc.text("THALASSO CONCARNEAU", pageWidth - 20, 72, { align: "right" });
+    doc.setFontSize(10);
+    doc.text("36 Rue des Sables Blancs", pageWidth - 20, 79, { align: "right" });
+    doc.text("29900 Concarneau", pageWidth - 20, 86, { align: "right" });
+
+    const tableData = Object.entries(bon.quantites)
+      .filter(([, qty]) => qty > 0)
+      .map(([key, qty]) => [
+        key.replace(/_/g, ' ').replace('peignoir', 'Peignoir'),
+        qty
+      ]);
+
+    autoTable(doc, {
+      startY: 105,
+      head: [["Article", "Quantité"]],
+      body: tableData,
+      theme: 'striped',
+      styles: { fontSize: 11, cellPadding: 8 },
+      headStyles: { fillColor: [0, 48, 87], textColor: [255, 255, 255] },
+    });
+
+    doc.setFontSize(13);
+    doc.text("Merci pour votre confiance !", pageWidth / 2, 265, { align: "center" });
+
+    const pdfBlob = doc.output('blob');
+    const url = URL.createObjectURL(pdfBlob);
+    window.open(url, '_blank');
   };
 
-  const generateExistingPDF = (bon) => {
-    generatePDF(bon.quantites, bon.numero);
+  // Modifier un bon
+  const editBon = (bon) => {
+    setQuantites(bon.quantites);
+    setCurrentPage('bons');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleLogout = () => {
@@ -155,8 +209,8 @@ export default function Dashboard() {
             <BonList 
               bons={bons} 
               onDelete={deleteBon} 
-              onGeneratePDF={generateExistingPDF}
-              onViewBon={viewBon} 
+              onViewPDF={viewPDF}
+              onEditBon={editBon} 
             />
           </>
         )}
