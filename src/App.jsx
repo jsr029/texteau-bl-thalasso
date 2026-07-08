@@ -125,7 +125,7 @@ function Dashboard({ user, onLogout, token }) {
     const numero = 'BL-' + Date.now().toString().slice(-6);
 
     // Logo + En-tête gauche
-    doc.addImage(logo, 'PNG', 15, 10, 75, 35);
+    doc.addImage(logo, 'PNG', 15, 10, 75, 25);
 
     doc.setFontSize(10);
     doc.setTextColor(70, 70, 70);
